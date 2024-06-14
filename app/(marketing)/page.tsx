@@ -3,6 +3,7 @@ import { Heading } from "./_components/heading";
 import { Comfortaa } from "next/font/google";
 
 import { cn } from "@/lib/utils";
+import { Heroes } from "./_components/heroes";
 
 const comfortaa = Comfortaa({
     subsets: ["latin"],
@@ -15,6 +16,7 @@ const MarketingPage= () => {
     <div className={cn("min-h-full flex flex-col",comfortaa.className)}>
         <div className="flex flex-col items-center justify-center md:justify-start text-center gap-y-8 flex-1 px-6 pb-10">
            <Heading />
+           <Heroes />
         </div>
     </div>
       );
