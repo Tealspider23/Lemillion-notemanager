@@ -1,24 +1,23 @@
-import { Heading } from "./_components/heading";
+import { Heading } from "./_components/heading"
+import { Heroes } from "./_components/heroes"
+import { Footer } from "./_components/footer"
 
-import { Comfortaa } from "next/font/google";
-
-import { cn } from "@/lib/utils";
-import { Heroes } from "./_components/heroes";
-
-const comfortaa = Comfortaa({
-    subsets: ["latin"],
-    weight:'700'
-  });
-
-
-const MarketingPage= () => {
-    return (
-    <div className={cn("min-h-full flex flex-col",comfortaa.className)}>
-        <div className="flex flex-col items-center justify-center md:justify-start text-center gap-y-8 flex-1 px-6 pb-10">
-           <Heading />
-           <Heroes />
-        </div>
+export default function MarketingPage () {
+return (
+  <>
+  <section>
+    <div className="min-h-full flex flex-col dark:bg-[#1F1F1F]">
+      <div className="flex flex-col items-center justify-center
+      md:justify-start text-center gap-y-8 flex-1 px-6 pb-10">
+          <Heading/>
+          <Heroes/>
+      </div>
+      <Footer/>
     </div>
-      );
+  </section> 
+  <section>
+    <div>Hello</div>
+  </section>
+  </> 
+  )
 }
-export default MarketingPage;
