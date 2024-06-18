@@ -27,7 +27,7 @@ const Logo = () => {
         className="hidden dark:block"
         />
 
-        <p className={cn("font-semibold",poppins.className)}>Lemillion</p>
+        <p className={cn("font-semibold",poppins.className)}>LEmillion</p>
     </div>
 );
 }
