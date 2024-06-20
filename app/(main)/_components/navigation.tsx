@@ -1,10 +1,22 @@
 'use client'
+import React, { ElementRef, useEffect, useRef, useState } from "react"
+import { useParams, usePathname, useRouter } from "next/navigation"
+import { useMutation } from "convex/react"
+import { ChevronsLeft, MenuIcon, Plus, PlusCircle, Search, Settings, Trash } from "lucide-react"
+import {useMediaQuery} from 'usehooks-ts'
+import { toast } from "sonner"
 
-import { ChevronsLeft, MenuIcon, Sidebar } from "lucide-react";
-import { usePathname } from "next/navigation";
-import { ElementRef, useRef, useState } from "react";
-import {useMediaQuery} from 'usehooks-ts';
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
+import { UserItem } from "/user-item"
+import { api } from "@/convex/_generated/api"
+import {Popover,PopoverTrigger,PopoverContent} from '@/components/ui/popover'
+import { useSearch } from "@/hooks/use-search"
+import { useSettings } from "@/hooks/use-settings"
+
+import { Item } from "./Item"
+import { DocumentList } from "./document-list"
+import { TrashBox } from "./trash-box"
+import { Navbar } from "./Navbar"
 
 const Navigation = () => {
     
@@ -42,7 +54,48 @@ const Navigation = () => {
         }
      }
 
+     const handleMouseUp = () => {
+        isResizingRef.current = false
+        document.removeEventListener("mousemove",handleMouseMove)
+        document.removeEventListener('mouseup',handleMouseUp)
+      }
 
+      const resetWidth = () => {
+        if (sidebarRef.current && navbarRef.current) {
+          setIsCollapsed(false)
+          setIsResetting(true)
+    
+          sidebarRef.current.style.width = isMobile ? '100%' : '240px'
+          navbarRef.current.style.setProperty("width",isMobile ? '0' : 'calc(100% - 240px)')
+          navbarRef.current.style.setProperty('left',isMobile ? '100%' :'240px')
+          setTimeout(() => {
+            setIsResetting(false)
+          }, 300);
+        }
+      }
+
+      const collapse = () => {
+        if (sidebarRef.current && navbarRef.current) {
+          setIsCollapsed(true)
+          setIsResetting(true)
+    
+          sidebarRef.current.style.width = '0'
+          navbarRef.current.style.setProperty('width','100%')
+          navbarRef.current.style.setProperty('left','0')
+          setTimeout(() => setIsResetting(false),300)
+        }
+      }
+
+      const handleCreate = () => {
+        const promise = create({title:'Untitled'})
+        .then((documentId) => router.push(`/documents/${documentId}`))
+    
+        toast.promise(promise,{
+          loading:"Creating new note...",
+          success:"New note created!",
+          error:"Failed to create note."
+        })
+      }
 
     return ( 
         <>
