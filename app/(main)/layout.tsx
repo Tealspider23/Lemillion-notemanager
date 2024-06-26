@@ -1,34 +1,52 @@
-'use client'
+import './globals.css'
+import { Toaster } from "sonner";
+import { Inter } from 'next/font/google'
+import type { Metadata } from 'next'
 
-import { Spinner } from "@/components/spinner";
-import { useConvexAuth } from "convex/react";
-import { redirect } from "next/navigation";
-import Navigation from "./_components/navigation";
+import { ThemeProvider } from "@/components/providers/theme-provider";
+import { ConvexClientProvider } from "@/components/providers/convex-provider";
+import { ModalProvider } from "@/components/providers/modal-provider";
+import { EdgeStoreProvider } from "@/lib/edgestore";
 
+const inter = Inter({ subsets: ['latin'] })
 
-const MainLayout = ({children}:{children:React.ReactNode}) => {
-
-    const {isAuthenticated,isLoading} = useConvexAuth();
-
-    if(isLoading){
-        return(
-            <div className="h-full flex items-center justify-center">
-                <Spinner size='lg' />
-            </div>
-        )
-    }
-    if(!isAuthenticated){
-        return redirect('/')
-    }
-
-
-    return ( 
-    <div className="h-full flex dark:bg-[#1F1F1F] ">
-        <Navigation />
-        <main className="flex-1 h-full overflow-y-auto">
-        {children}
-        </main>
-    </div> );
+export const metadata: Metadata = {
+  title: 'Lemillion',
+  description: 'The connected workspace where better, faster work happens.',
+  icons: {
+    icon: [
+      {
+        media: "(prefers-color-scheme: light)",
+        url: "/logo.svg",
+        href: "/logo.svg",
+      },
+      {
+        media: "(prefers-color-scheme: dark)",
+        url: "/logo-dark.svg",
+        href: "/logo-dark.svg",
+      }
+    ]
+  }
 }
- 
-export default MainLayout;
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className}>
+        <ConvexClientProvider>
+          <EdgeStoreProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange storageKey="jotion-clone-2">
+            <Toaster position="bottom-center" />
+            <ModalProvider/>
+            {children}
+          </ThemeProvider>
+          </EdgeStoreProvider>
+        </ConvexClientProvider>
+      </body>
+    </html>
+  )
+}
