@@ -1,52 +1,35 @@
-import './globals.css'
-import { Toaster } from "sonner";
-import { Inter } from 'next/font/google'
-import type { Metadata } from 'next'
+'use client'
 
-import { ThemeProvider } from "@/components/providers/theme-provider";
-import { ConvexClientProvider } from "@/components/providers/convex-provider";
-import { ModalProvider } from "@/components/providers/modal-provider";
-import { EdgeStoreProvider } from "@/lib/edgestore";
+import { Spinner } from "@/components/spinner";
+import { useConvexAuth } from "convex/react";
+import { redirect } from "next/navigation";
+import React from "react";
+import { Navigation } from "./_components/navigation";
+import { SearchCommand } from "@/components/search-command";
 
-const inter = Inter({ subsets: ['latin'] })
+export default function MainLayout ({children}:{children:React.ReactNode}) {
 
-export const metadata: Metadata = {
-  title: 'Lemillion',
-  description: 'The connected workspace where better, faster work happens.',
-  icons: {
-    icon: [
-      {
-        media: "(prefers-color-scheme: light)",
-        url: "/logo.svg",
-        href: "/logo.svg",
-      },
-      {
-        media: "(prefers-color-scheme: dark)",
-        url: "/logo-dark.svg",
-        href: "/logo-dark.svg",
-      }
-    ]
+  const {isAuthenticated,isLoading} = useConvexAuth()
+
+  if (isLoading) {
+    return (
+      <div className="h-full flex justify-center items-center">
+        <Spinner size='lg'/>
+      </div>
+    )
   }
-}
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
-        <ConvexClientProvider>
-          <EdgeStoreProvider>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange storageKey="jotion-clone-2">
-            <Toaster position="bottom-center" />
-            <ModalProvider/>
-            {children}
-          </ThemeProvider>
-          </EdgeStoreProvider>
-        </ConvexClientProvider>
-      </body>
-    </html>
-  )
+  if (!isAuthenticated) {
+    return redirect('/')
+  }
+
+return (
+  <div className="h-full flex dark:bg-[#1F1F1F]">
+    <Navigation/>
+    <main className="flex-1 h-full overflow-y-auto">
+      <SearchCommand/>
+      {children}
+    </main>
+  </div>
+)
 }
