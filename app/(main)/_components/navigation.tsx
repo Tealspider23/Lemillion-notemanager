@@ -7,7 +7,7 @@ import {useMediaQuery} from 'usehooks-ts'
 import { toast } from "sonner"
 
 import { cn } from "@/lib/utils"
-import { UserItem } from "./user-item"
+import { UserItem } from "@/app/(main)/_components/user-item"
 import { api } from "@/convex/_generated/api"
 import {Popover,PopoverTrigger,PopoverContent} from '@/components/ui/popover'
 import { useSearch } from "@/hooks/use-search"
