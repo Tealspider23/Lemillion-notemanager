@@ -58,7 +58,7 @@ return (
       <Cover preview url={document.coverImage}/>
       <div className="md:max-w-3xl lg:md-max-w-4xl mx-auto">
         <Toolbar preview initialData={document}/>
-        <Editor editable={false} onChange={onChange} initialContent={document.content} />
+        <Editor onChange={onChange} initialContent={document.content} />
       </div>
     </div>
 )
