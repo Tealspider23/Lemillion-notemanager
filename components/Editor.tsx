@@ -7,7 +7,7 @@ import "@blocknote/mantine/style.css";
 import { useTheme } from "next-themes";
 import { useEdgeStore } from "@/lib/edgestore";
 import { PartialBlock } from "@blocknote/core";
-import flatted from 'flatted';
+import {parse,stringify} from 'flatted';
 
 interface EditorProps {
   onChange: (value: string) => void;
@@ -28,7 +28,7 @@ function Editor({ onChange, initialContent }: EditorProps) {
     uploadFile: handleUpload,
   });
   blockNoteEditor.onChange((content) => {
-    const flattenedContent = flatted.parse(flatted.stringify(content));
+    const flattenedContent = parse(stringify(content));
     onChange(JSON.stringify(flattenedContent, null, 2));
   });
 
