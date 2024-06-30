@@ -29,7 +29,7 @@ Follow these instructions to get a copy of Lemillion NoteManager up and running 
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/lemillion-notemanager.git
+   git clone https://github.com/Tealspider23/lemillion-notemanager.git
    cd lemillion-notemanager
    ```
 
